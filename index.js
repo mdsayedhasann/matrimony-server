@@ -30,6 +30,18 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+
+    const bioDataCollection = client.db('matrimoni-server').collection('bioData')
+
+
+    // Bio Data Collection Start
+    app.post('/bioData', async (req, res) => {
+        const bioData = req.body;
+        const result = await bioDataCollection.insertOne(bioData)
+        res.send(result)
+    })
+    // Bio Data Collection End
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
