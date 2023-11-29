@@ -40,6 +40,11 @@ async function run() {
         const result = await bioDataCollection.insertOne(bioData)
         res.send(result)
     })
+
+    app.get('/bioData', async (req, res) => {
+        const bioData = await bioDataCollection.find().toArray()
+        res.send(bioData)
+    })
     // Bio Data Collection End
 
     // Send a ping to confirm a successful connection
