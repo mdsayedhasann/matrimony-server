@@ -9,6 +9,7 @@ const port = process.env.PORT || 3000
 
 app.use(cors())
 app.use(express.json())
+const { ObjectId } = require('mongodb');
 
 
 // Mongodb Code Start
@@ -44,6 +45,20 @@ async function run() {
     app.get('/bioData', async (req, res) => {
         const bioData = await bioDataCollection.find().toArray()
         res.send(bioData)
+    })
+
+    app.delete('/bioData/:id', async (req, res) => {
+        const id = req.params.id
+        const query = {_id: new ObjectId(id)}
+        const result = await bioDataCollection.deleteOne(query)
+        res.send(result)
+    })
+
+    app.get('/bioData/:id', async(req, res) => {
+        const id = req.params.id
+        const query = {_id: new ObjectId(id)}
+        const result = await bioDataCollection.findOne(query)
+        res.send(result)
     })
     // Bio Data Collection End
 
