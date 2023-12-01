@@ -33,7 +33,7 @@ async function run() {
     await client.connect();
 
     const bioDataCollection = client.db('matrimoni-server').collection('bioData')
-
+    const requestCollection = client.db('matrimoni-server').collection('request')
 
     // Bio Data Collection Start
     app.post('/bioData', async (req, res) => {
@@ -61,6 +61,27 @@ async function run() {
         res.send(result)
     })
     // Bio Data Collection End
+
+    // Request Form Start 
+    app.post('/request', async(req, res) => {
+        const request = req.body
+        const result = await requestCollection.insertOne(request)
+        res.send(result)
+    })
+
+    app.get('/request', async(req, res) => {
+        const request = req.body
+        const result = await requestCollection.find(request).toArray()
+        res.send(result)
+    })
+
+    app.delete('/request/:id', async(req, res) => {
+        const id = req.params.id
+        const query = {_id: new ObjectId(id)}
+        const deleteRequest = await requestCollection.deleteOne(query)
+        res.send(deleteRequest)
+    })
+    // Request Form End 
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
