@@ -75,12 +75,33 @@ async function run() {
         res.send(result)
     })
 
+    app.get('/request/:id', async(req, res) => {
+        const id = req.params.id
+        const query = {_id: new ObjectId(id)}
+        const result = await requestCollection.findOne(query)
+        res.send(result)
+    })
+
     app.delete('/request/:id', async(req, res) => {
         const id = req.params.id
         const query = {_id: new ObjectId(id)}
         const deleteRequest = await requestCollection.deleteOne(query)
         res.send(deleteRequest)
     })
+
+    // Approve Request
+    app.patch('/request/approved/:id', async(req, res) => {
+        const id = req.params.id
+        const filter = {_id: new ObjectId(id)}
+        const updateDoc = {
+            $set: {
+                isApproved: true
+            }
+        }
+        const result = await requestCollection.updateOne(filter, updateDoc)
+        res.send(result)
+    })
+
     // Request Form End 
 
     // Send a ping to confirm a successful connection
