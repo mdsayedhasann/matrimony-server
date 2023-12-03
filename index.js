@@ -50,6 +50,10 @@ async function run() {
             res.send(result)
         })
 
+        app.get('/contact', async(req, res) => {
+            const result = await contactCollection.find().toArray()
+            res.send(result)
+        })
         // Contact CRUD End
 
         // Users CRUD Start 
